@@ -10,3 +10,10 @@ def predict(text, language):
 
 demo = gr.Interface(fn=predict, inputs=["text", "dropdown"], outputs="audio")
 demo.launch()
+import gradio as gr
+
+# Hugging Face का बेहतरीन प्रीमियम मॉडल इस्तेमाल करें
+demo = gr.load("models/facebook/mms-tts-eng")
+
+demo.launch()
+
