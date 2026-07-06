@@ -1,15 +1,12 @@
-import streamlit as st
-from gtts import gTTS
-import os
+import gradio as gr
+from TTS.api import TTS
 
-st.title("Tony Pro - AI Voice Studio")
-text = st.text_area("अपनी स्क्रिप्ट यहाँ लिखें:")
+# मॉडल लोड करें
+tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2", gpu=False)
 
-if st.button("आवाज़ बनाएं"):
-    if text:
-        tts = gTTS(text, lang='hi')
-        tts.save("output.mp3")
-        st.audio("output.mp3")
-    else:
-        st.warning("कृपया पहले स्क्रिप्ट लिखें!")
+def predict(text, language):
+    tts.tts_to_file(text=text, file_path="output.wav", speaker_wav="reference.wav", language=language)
+    return "output.wav"
 
+demo = gr.Interface(fn=predict, inputs=["text", "dropdown"], outputs="audio")
+demo.launch()
